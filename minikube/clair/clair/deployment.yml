@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: clair-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: clair-deployment
+    spec:
+      containers:
+      - name: clair
+        image: quay.io/coreos/clair:v2.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 6060
+          - containerPort: 6061
+        env:
+        - name: PGUSER
+          value: postgres
+        - name: PGPASSWORD
+          value: password
+        args:
+          - "-config"
+          - "/etc/config/config.yaml"
+          - "--log-level=debug"
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/config
+            readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 6061
+          initialDelaySeconds: 30
+          periodSeconds: 4
+          timeoutSeconds: 2
+          failureThreshold: 2
+      volumes:
+        - name: config-volume
+          configMap:
+            name: clair-config

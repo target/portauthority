@@ -1,0 +1,393 @@
+{
+	"info": {
+		"name": "portauthority Examples",
+		"_postman_id": "99b7494e-a613-9517-c937-2792f310c198",
+		"description": "Examples for using postman to test/execute Port Authority API calls",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [{
+			"name": "POST",
+			"item": [{
+					"name": "POST k8s Crawler with Scan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"K8sCrawler\": {\n\t\t\"Context\": \"minikube\",\n\t\t\"KubeConfig\": \"{{k8s_config}}\",\n\t\t\"Scan\": true,\n\t\t\"MaxThreads\": 10\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/crawlers/k8s",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"crawlers",
+								"k8s"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST k8s Crawler without Scan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"K8sCrawler\": {\n\t\t\"Context\": \"minikube\",\n\t\t\"KubeConfig\": \"{{k8s_config}}\",\n\t\t\"Scan\": false\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/crawlers/k8s",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"crawlers",
+								"k8s"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Single ImageScan - docker.io Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Image\": {\n\t\t\"Registry\": \"https://registry-1.docker.io\",\n\t\t\"Repo\": \"library/postgres\",\n\t\t\"Tag\": \"9.2\",\n\t\t\"Username\": \"\",\n\t\t\"Password\": \"\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/images",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST K8s Image Policy Webhook",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"kind\": \"ImageReview\",\n\t\"apiVersion\": \"imagepolicy.k8s.io/v1alpha1\",\n\t\"metadata\": {\n\t\t\"creationTimestamp\": null\n\t},\n\t\"spec\": {\n\t\t\"containers\": [{\n\t\t\t\"image\": \"https://registry-1.docker.io/library/postgres:latest\"\n\t\t}],\n\t\t\"annotations\": {\n\t\t\t\"alpha.image-policy.k8s.io/policy\": \"default\",\n\t\t\t\"alpha.image-policy.k8s.io/portauthority-webhook-enable\": \"true\"\n\t\t},\n\t\t\"namespace\": \"default\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/k8s-image-policy-webhook",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"k8s-image-policy-webhook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Image Policy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Policy\": {\n\t\t\"Name\": \"default\",\n\t\t\"AllowedRiskSeverity\": \"\",\n\t\t\"AllowedCVENames\": \"\",\n\t\t\"AllowNotFixed\": false,\n\t\t\"NotAllowedCveNames\": \"\",\n\t\t\"NotAllowedOSNames\": \"\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/policies",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"policies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET",
+			"item": [{
+					"name": "GET Crawler by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"K8sCrawler\": {\n\t\t\"Context\": \"minikube\",\n\t\t\"KubeConfig\": \"{{k8s_config}}\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/crawlers/1",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"crawlers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Image by ID with features and vulnerabilites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Image\": {\n    \"Registry\": \"https://registry-1.docker.io\",\n    \"Repo\": \"library/postgres\",\n    \"Tag\": \"latest\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/images/1?features&vulnerabilites",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"images",
+								"1"
+							],
+							"query": [{
+									"key": "features",
+									"value": "",
+									"equals": true
+								},
+								{
+									"key": "vulnerabilites",
+									"value": "",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Image Policy Violations by Image ID and Policy Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Image\": {\n   \"Registry\": \"https://registry-1.docker.io\",\n    \"Repo\": \"library/postgres\",\n     \"Tag\": \"latest\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/images/1?policy=default",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"images",
+								"1"
+							],
+							"query": [{
+								"key": "policy",
+								"value": "default",
+								"equals": true
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Vulnerabilities Policy by Policy Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/policies/default",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"policies",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Container by ID with image features",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/containers/1?features",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"containers",
+								"1"
+							],
+							"query": [{
+								"key": "features",
+								"value": "",
+								"equals": true
+							}]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LIST",
+			"item": [{
+					"name": "GET list of Images by Registry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/images?registry=https://registry-1.docker.io",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"images"
+							],
+							"query": [{
+								"key": "registry",
+								"value": "https://registry-1.docker.io"
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET list of Images by last seen date with a limit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/images?date_start=2018-04-03&limit=2",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"images"
+							],
+							"query": [{
+									"key": "date_start",
+									"value": "2018-04-03"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET list of Policies by last seen date with a limit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/policies",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"policies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET list of Containers by namespace and image name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/{{version}}/containers?namespace=default&name=postgres",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{version}}",
+								"containers"
+							],
+							"query": [{
+									"key": "namespace",
+									"value": "default"
+								},
+								{
+									"key": "name",
+									"value": "postgres"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

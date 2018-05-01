@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: clair-service
+  name: clair-service
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 6060
+      targetPort: 6060
+      nodePort: 32355
+      name: clair-port0
+    - port: 6061
+      protocol: TCP
+      targetPort: 6061
+      nodePort: 30976
+      name: clair-port1
+  selector:
+     app: clair-deployment

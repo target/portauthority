@@ -1,0 +1,9 @@
+{
+  "imagePolicy": {
+     "kubeConfigFile": "/Users/<myid>/go/src/github.com/target/portauthority/webhook-example/image-review.example.yml",
+     "allowTTL": 50,
+     "denyTTL": 50,
+     "retryBackoff": 500,
+     "defaultAllow": true
+  }
+}

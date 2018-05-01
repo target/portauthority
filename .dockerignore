@@ -1,0 +1,5 @@
+# files not to be included in docker build
+
+.git*
+config*.yaml
+config*.yml

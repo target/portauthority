@@ -1,0 +1,37 @@
+package: github.com/target/portauthority
+import:
+- package: github.com/docker/distribution
+  version: 99cb7c0946d2f5a38015443e515dc916295064d7
+  subpackages:
+  - context
+  - digest
+  - manifest
+  - manifest/schema1
+  - manifest/schema2
+  - reference
+  - uuid
+- package: github.com/julienschmidt/httprouter
+  version: ^1.1.0
+- package: github.com/lib/pq
+- package: github.com/pkg/errors
+  version: ^0.8.0
+- package: github.com/prometheus/client_golang
+  version: ^0.9.0-pre1
+  subpackages:
+  - prometheus
+- package: github.com/Sirupsen/logrus
+  version: 1.0.5
+- package: github.com/tylerb/graceful
+  version: ^1.2.15
+- package: github.com/urfave/cli
+  version: ^1.20.0
+- package: golang.org/x/oauth2
+  subpackages:
+  - google
+- package: gopkg.in/yaml.v2
+  version: ^2.2.0
+- package: k8s.io/apimachinery/pkg/apis/meta/v1
+- package: k8s.io/client-go/kubernetes
+- package: k8s.io/client-go/tools/clientcmd
+  subpackages:
+  - api

@@ -1,0 +1,25 @@
+# clusters refers to the remote service.
+# this config assumes you're running port authority locally.
+# the IPs below are the one minikube uses as your IP routable via the cluster.
+clusters:
+- name: image-review-server
+  cluster:
+    insecure-skip-tls-verify: true
+    server: http://192.168.99.100:31700/v1/k8s-image-policy-webhook  #nodeport routable ip
+    #server: http://10.0.2.2:6100/v1/k8s-image-policy-webhook ##local development routeable ip
+
+# users refers to the API server's webhook configuration.
+users:
+- name: kube-apiserver
+  user:
+    client-certificate: /Users/<myid>/.minikube/client.crt
+    client-key: /Users/<myid>/.minikube/client.key
+
+
+current-context: webhook
+
+contexts:
+  - context:
+      cluster: image-review-server
+      user: kube-apiserver
+    name: webhook

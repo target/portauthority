@@ -1,0 +1,6 @@
+.git
+!.gitignore
+vendor/*
+bin/*
+portauthority
+!minikube/portauthority
