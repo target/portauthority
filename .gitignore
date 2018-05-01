@@ -3,4 +3,4 @@
 vendor/*
 bin/*
 portauthority
-!minikube/portauthority
+!minikube/portauthority/*
