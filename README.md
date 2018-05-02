@@ -1,5 +1,3 @@
-[![Build Status]()]()
-
 ## Introduction
 
 Port Authority is an API service that uses the fantastic vulnerability static analysis tool [CoreOS Clair](https://github.com/coreos/clair) to provide component based vulnerability assessments of Docker images and assists in the auditing and governance of container deployments from build-time (Docker registries) to run-time (Kubernetes).
