@@ -14,7 +14,7 @@ It has close integrations with Kubernetes that will help discover running contai
 
    `minikube start`
 
-**NOTE:** Supported Kubernetes versions (1.6.x - 1.9.x). Suported Clair versions v2.x.x.
+**NOTE:** Supported Kubernetes versions (1.6.x - 1.9.x). Supported Clair versions v2.x.x.
 
 ### Build and Deploy to Minikube
 1. Use Minikube Docker:
