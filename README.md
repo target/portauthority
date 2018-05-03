@@ -6,7 +6,8 @@ The Port Authority API allows for the scanning of public or private individual i
 
 It has close integrations with Kubernetes that will help discover running containers and scan their source images. For enforcement, it provides a webhook that when leveraged by a Kubernetes admission controller will allow or deny deployments based on customizable policies.
 
-## Getting Started
+
+## Getting Started <img align="right" width="300" src="imgs/ahab-small.png">
 
 ### Setup and Start Minikube
 1. Install [Minikube](https://github.com/kubernetes/minikube)
