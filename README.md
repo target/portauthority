@@ -1,10 +1,10 @@
 ## Introduction
 
-Port Authority is an API service that uses the fantastic vulnerability static analysis tool [CoreOS Clair](https://github.com/coreos/clair) to provide component based vulnerability assessments of Docker images and assists in the auditing and governance of container deployments from build-time (Docker registries) to run-time (Kubernetes).
+Port Authority is an API service that delivers component based vulnerability assessments for Docker images from the point of build (Docker registries) to the point of run-time (Kubernetes). Port Authority also provides Developers additional customizable offerings to assist with the automated audit and governance of their containers.
 
-The Port Authority API allows for the scanning of public or private individual images or entire private Docker registries like ([Docker Hub](https://hub.docker.com), [Google Container Registry](https://cloud.google.com/container-registry/) and [Artifactory](https://jfrog.com/artifactory/)).
+The Port Authority API is capable of scanning public or private individual images as well as entire private Docker registries like [Docker Hub](https://hub.docker.com), [Google Container Registry](https://cloud.google.com/container-registry/) or [Artifactory](https://jfrog.com/artifactory/) for vulnerabilities. Port Authority also integrates with Kubernetes to continuously discover running containers and inventory those deployed images for scanning.
 
-It has close integrations with Kubernetes that will help discover running containers and scan their source images. For enforcement, it provides a webhook that when leveraged by a Kubernetes admission controller will allow or deny deployments based on customizable policies.
+In the backend Port Authority utilizes the open source static analysis tool [Clair](https://github.com/coreos/clair) by CoreOS to scan images and identify vulnerabilities. For enforcement, Port Authority provides a webhook that when leveraged by a [Kubernetes](https://github.com/kubernetes/kubernetes) admission controller will allow or deny deployments based on customizable policies.
 
 
 ## Getting Started <img align="right" width="300" src="imgs/ahab-small.png">
@@ -31,12 +31,12 @@ It has close integrations with Kubernetes that will help discover running contai
    `make deploy-minikube`
 
 ## Optional Configuration
-Different configuration adjustments can be made to the port authority deployment here: [minikube/portauthority/portauthority/config.yml](minikube/portauthority/portauthority/config.yml)
+Different configuration adjustments can be made to the Port Authority deployment here: [minikube/portauthority/portauthority/config.yml](minikube/portauthority/portauthority/config.yml)
 
 :white_check_mark: Add Docker Credentials used by the K8s Crawler scan feature
 
 ```
-### Environment variables defined below are mapped to credentials used by the Kubneretes Crawler API (/v1/crawler/k8s)
+### Environment variables defined below are mapped to credentials used by the Kubernetes Crawler API (/v1/crawler/k8s)
 ### A 'Scan: true' flag will invoke their usage
 k8scrawlcredentials:
   # Use "" for basic auth on registries that do not require a username and password
@@ -48,7 +48,7 @@ k8scrawlcredentials:
     password: "GCR_PASS"
 ```
 
-:white_check_mark: Enable the [Kubernetes Admission Controler](docs/webhook-example/README.md) and change webhooks default behavior
+:white_check_mark: Enable the [Kubernetes Admission Controller](docs/webhook-example/README.md) and change webhooks default behavior
 ```
 # Setting imagewebhookdefaultblock to true will set the imagewebhooks endpoint default behavior to block any images with policy violations.
 # If it is set to false a user can change enable the behavior by setting the portauthority-webhook deployment annotation to true
