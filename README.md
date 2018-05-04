@@ -1,6 +1,6 @@
 ## Introduction
 
-Port Authority is an API service that delivers component based vulnerability assessments for Docker images at time of build and in a run-time environments. Port Authority also provides Developers additional customizable offerings to assist with the automated audit and governance of their containers.
+Port Authority is an API service that delivers component based vulnerability assessments for Docker images at time of build and in run-time environments. Port Authority also provides Developers additional customizable offerings to assist with the automated audit and governance of their containers.
 
 The Port Authority API is capable of scanning public or private individual images as well as entire private Docker registries like [Docker Hub](https://hub.docker.com), [Google Container Registry](https://cloud.google.com/container-registry/) or [Artifactory](https://jfrog.com/artifactory/). Port Authority integrates with Kubernetes to continuously discover running containers and inventory those deployed images for scanning.
 
