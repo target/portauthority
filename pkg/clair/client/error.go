@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 package clairclient
 
 import "fmt"
