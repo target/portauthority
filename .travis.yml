@@ -1,0 +1,9 @@
+language: go
+go:
+  - 1.9.2
+
+sudo: required
+
+script:
+ - make deps
+ - make build-linux
