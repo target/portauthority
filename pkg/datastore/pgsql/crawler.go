@@ -1,12 +1,14 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 package pgsql
 
 import (
 	"database/sql"
 	"encoding/json"
 
+	"github.com/pkg/errors"
 	"github.com/target/portauthority/pkg/commonerr"
 	"github.com/target/portauthority/pkg/datastore"
-	"github.com/pkg/errors"
 )
 
 func (p *pgsql) GetCrawler(id int) (*datastore.Crawler, error) {

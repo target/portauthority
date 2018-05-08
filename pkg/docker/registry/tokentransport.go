@@ -1,3 +1,7 @@
+// Copyright (c) 2015, Salesforce.com, Inc. All rights reserved.
+
+// Copyright (c) 2018 Target Brands, Inc.
+
 package registry
 
 import (

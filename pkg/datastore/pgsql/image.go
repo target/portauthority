@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 // Most of the code and structure on how the features and vulnerabilites are
 // found and returned are ported from the Clair implementation.
 // The biggest difference is that we base this on an image instead of layers.
@@ -8,11 +10,11 @@ import (
 	"database/sql"
 	"regexp"
 
-	"github.com/target/portauthority/pkg/commonerr"
 	log "github.com/Sirupsen/logrus"
+	"github.com/target/portauthority/pkg/commonerr"
 
-	"github.com/target/portauthority/pkg/datastore"
 	"github.com/pkg/errors"
+	"github.com/target/portauthority/pkg/datastore"
 )
 
 // GetAllImages returns all images from the psql table 'images'

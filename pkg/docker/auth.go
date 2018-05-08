@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 package docker
 
 import (
@@ -7,8 +9,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/target/portauthority/pkg/docker/registry"
 	"github.com/pkg/errors"
+	"github.com/target/portauthority/pkg/docker/registry"
 	"golang.org/x/oauth2/google"
 )
 

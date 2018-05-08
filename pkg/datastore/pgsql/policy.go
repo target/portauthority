@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 // Most of the code and structure on how the features and vulnerabilites are
 // found and returned are ported from the Clair implementation.
 // The biggest difference is that we base this on an image instead of layers.
@@ -7,8 +9,8 @@ package pgsql
 import (
 	"database/sql"
 
-	"github.com/target/portauthority/pkg/datastore"
 	"github.com/pkg/errors"
+	"github.com/target/portauthority/pkg/datastore"
 )
 
 // GetPolicy will return a single database policy
