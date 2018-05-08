@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 package docker
 
 import (
@@ -6,8 +8,8 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	"github.com/target/portauthority/pkg/docker/registry"
 	"github.com/pkg/errors"
+	"github.com/target/portauthority/pkg/docker/registry"
 )
 
 // ImageEnvelope struct init

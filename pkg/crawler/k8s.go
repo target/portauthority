@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 package crawler
 
 import (
@@ -10,11 +12,11 @@ import (
 	"sync/atomic"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
+	"github.com/pkg/errors"
 	"github.com/target/portauthority/pkg/clair/client"
 	"github.com/target/portauthority/pkg/datastore"
 	"github.com/target/portauthority/pkg/docker"
-	log "github.com/Sirupsen/logrus"
-	"github.com/pkg/errors"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"

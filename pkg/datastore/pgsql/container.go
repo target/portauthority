@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Target Brands, Inc.
+
 package pgsql
 
 import (
@@ -5,9 +7,9 @@ import (
 	"encoding/json"
 	"regexp"
 
+	"github.com/pkg/errors"
 	"github.com/target/portauthority/pkg/commonerr"
 	"github.com/target/portauthority/pkg/datastore"
-	"github.com/pkg/errors"
 )
 
 func (p *pgsql) GetContainerByID(id int) (*datastore.Container, error) {
