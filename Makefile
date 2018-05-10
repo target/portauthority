@@ -21,7 +21,7 @@ deps:	| glide
 				@glide install -v
 
 ## File Targets ##
-deploy-minikube: clean build-linux docker-build clean-minikube
+deploy-minikube: clean docker-build clean-minikube
 				@echo "Applying Clair postgres deployment files"
 				kubectl apply -f ./minikube/clair/postgres
 				kubectl rollout status deployment/clair-postgres-deployment

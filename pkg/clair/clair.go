@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"strings"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/target/portauthority/pkg/clair/client"
 
