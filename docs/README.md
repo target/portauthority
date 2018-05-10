@@ -608,7 +608,7 @@ The POST route for the K8s Image Policy Webhook responds to requests from a Kube
 
 The response will contain an allow or deny for images that have vulnerabilities that have violated a given policy.
 
-For instructions on how to setup Minikube to use the webhook can be found [HERE](docs/webhook-example/README.md).
+For instructions on how to setup Minikube to use the webhook can be found [HERE](webhook-example/README.md).
 
 #### Example Request
 
