@@ -25,7 +25,7 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/target/portauthority/pkg/clair/client"
 	"github.com/target/portauthority/pkg/datastore"
 	"github.com/target/portauthority/pkg/stopper"

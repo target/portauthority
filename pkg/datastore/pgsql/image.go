@@ -10,7 +10,7 @@ import (
 	"database/sql"
 	"regexp"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/target/portauthority/pkg/commonerr"
 
 	"github.com/pkg/errors"
