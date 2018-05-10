@@ -1,5 +1,5 @@
-hash: bda88a9cfb269334c16969c1a83ec96878fb35368aef9707db8eded0e83c8a95
-updated: 2018-05-01T09:58:58.938577241-05:00
+hash: 531e75965aa6463a05b808c964c8510c150c739d8551f5893994bad27b36ce46
+updated: 2018-05-10T15:48:58.962546-04:00
 imports:
 - name: cloud.google.com/go
   version: 3b1ae45394a234c385be014e9a488f2bb6eef821
@@ -11,17 +11,17 @@ imports:
   subpackages:
   - quantile
 - name: github.com/docker/distribution
-  version: 99cb7c0946d2f5a38015443e515dc916295064d7
+  version: 83389a148052d74ac602f5f1d62f86ff2f3c4aa5
   subpackages:
   - context
-  - digest
+  - digestset
   - manifest
   - manifest/schema1
   - manifest/schema2
   - reference
   - uuid
 - name: github.com/docker/libtrust
-  version: fa567046d9b14f6aa788882a950d69651d230b21
+  version: aabc10ec26b754e797f9028f4589c5b7bd90dc20
 - name: github.com/ghodss/yaml
   version: 73d445a93680fa1a78ae23a5839bad48f32ba1ee
 - name: github.com/gogo/protobuf
@@ -47,10 +47,6 @@ imports:
   - OpenAPIv2
   - compiler
   - extensions
-- name: github.com/gorilla/context
-  version: 14f550f51af52180c2eefed15e5fd18d63c0a64a
-- name: github.com/gorilla/mux
-  version: e444e69cbd2e2e3e0749a2f3c717cec491552bbf
 - name: github.com/imdario/mergo
   version: 6633656539c1639d9d78127b7d47c622b5d7b6dc
 - name: github.com/json-iterator/go
@@ -69,6 +65,8 @@ imports:
   version: bacd9c7ef1dd9b15be4a9909b8ac7a4e313eec94
 - name: github.com/modern-go/reflect2
   version: 05fbef0ca5da472bbf96c9322b84a53edc03c9fd
+- name: github.com/opencontainers/go-digest
+  version: 279bed98673dd5bef374d3b6e4b09e2af76183bf
 - name: github.com/pkg/errors
   version: 645ef00459ed84a119197bfb8d8205042c6df63d
 - name: github.com/prometheus/client_golang
@@ -91,7 +89,7 @@ imports:
   - internal/util
   - nfs
   - xfs
-- name: github.com/Sirupsen/logrus
+- name: github.com/sirupsen/logrus
   version: c155da19408a8799da419ed3eeb0cb5db0ad5dbc
 - name: github.com/spf13/pflag
   version: 583c0c0531f06d5278b7d917446061adc344b5cd
@@ -100,7 +98,7 @@ imports:
 - name: github.com/urfave/cli
   version: cfb38830724cc34fedffe9a2a29fb54fa9169cd1
 - name: golang.org/x/crypto
-  version: ae8bce0030810cf999bb2b9868ae5c7c58e6343b
+  version: 2d027ae1dddd4694d54f7a8b6cbe78dca8720226
   subpackages:
   - ssh/terminal
 - name: golang.org/x/net
@@ -136,7 +134,7 @@ imports:
   subpackages:
   - rate
 - name: google.golang.org/appengine
-  version: 12d5545dc1cfa6047a286d5e853841b6471f4c19
+  version: 962cbd1200af94a5a35ba8d512e9f91271b4d01a
   subpackages:
   - internal
   - internal/app_identity
@@ -152,7 +150,7 @@ imports:
 - name: gopkg.in/yaml.v2
   version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
 - name: k8s.io/api
-  version: c416ded332245f3aa810919a74cc5b561142696c
+  version: 53d615ae3f440f957cb9989d989d597f047262d9
   subpackages:
   - admissionregistration/v1alpha1
   - admissionregistration/v1beta1
@@ -184,7 +182,7 @@ imports:
   - storage/v1alpha1
   - storage/v1beta1
 - name: k8s.io/apimachinery
-  version: 2ad92c37230c7d04408c333e1d1db20450abdc7e
+  version: 13b73596e4b63e03203e86f6d9c7bcc1b937c62f
   subpackages:
   - pkg/api/errors
   - pkg/api/meta
@@ -221,7 +219,7 @@ imports:
   - pkg/watch
   - third_party/forked/golang/reflect
 - name: k8s.io/client-go
-  version: e26238c324151bb0ca17135bc7bbd44040965d11
+  version: 638bb430f4aff1c30dd25aab07e1dbcfc78371e4
   subpackages:
   - api
   - discovery

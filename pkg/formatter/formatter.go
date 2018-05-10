@@ -20,7 +20,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 // JSONExtendedFormatter formats log information to JSON format with time and line number in file

@@ -24,7 +24,7 @@ import (
 	"syscall"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/target/portauthority/api"
 	"github.com/target/portauthority/pkg/clair/client"
 	"github.com/target/portauthority/pkg/datastore"
