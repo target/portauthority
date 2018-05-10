@@ -78,7 +78,7 @@ type Container struct {
 	Cluster         string                  `json:"Cluster"`
 	Name            string                  `json:"Name"`
 	Image           string                  `json:"Image"`
-	ImageScanned    bool                    `json:"ImageScanned"`
+	ImageScanned    bool                    `json:"ImageScanned,omitempty"`
 	ImageID         string                  `json:"ImageID"`
 	ImageRegistry   string                  `json:"ImageRegistry"`
 	ImageRepo       string                  `json:"ImageRepo"`
