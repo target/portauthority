@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/pkg/errors"
 	"github.com/target/portauthority/pkg/clair/client"
 	"github.com/target/portauthority/pkg/datastore"
