@@ -1,15 +1,16 @@
 package: github.com/target/portauthority
 import:
 - package: github.com/docker/distribution
-  version: 99cb7c0946d2f5a38015443e515dc916295064d7
+  version: 83389a148052d74ac602f5f1d62f86ff2f3c4aa5
   subpackages:
   - context
-  - digest
   - manifest
   - manifest/schema1
   - manifest/schema2
   - reference
   - uuid
+- package: github.com/opencontainers/go-digest
+  version: ^1.0.0
 - package: github.com/julienschmidt/httprouter
   version: ^1.1.0
 - package: github.com/lib/pq
@@ -19,7 +20,7 @@ import:
   version: ^0.9.0-pre1
   subpackages:
   - prometheus
-- package: github.com/Sirupsen/logrus
+- package: github.com/sirupsen/logrus
   version: 1.0.5
 - package: github.com/tylerb/graceful
   version: ^1.2.15
