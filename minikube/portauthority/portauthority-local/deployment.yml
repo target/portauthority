@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: portauthority-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: portauthority-deployment
+    spec:
+      containers:
+      - name: portauthority
+        image: portauthority:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6100
+        - containerPort: 6101
+        env:
+        - name: PGUSER
+          value: postgres
+        - name: PGPASSWORD
+          value: password
+        command:
+          - "portauthority"
+          - "serve"
+          - "-c"
+          - "/config/config.yml"
+          - "-l"
+          - "debug"
+        volumeMounts:
+          - name: config-volume
+            mountPath: /config
+            readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 10
+          periodSeconds: 8
+          timeoutSeconds: 4
+          failureThreshold: 4
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 6101
+          initialDelaySeconds: 10
+          periodSeconds: 8
+          timeoutSeconds: 4
+          failureThreshold: 4
+      volumes:
+        - name: config-volume
+          configMap:
+            name: portauthority-config

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: portauthority-service
+  name: portauthority-service
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 6100
+      targetPort: 6100
+      nodePort: 31700
+      name: portauthority-port0
+    - port: 6101
+      protocol: TCP
+      targetPort: 6101
+      nodePort: 31701
+      name: portauthority-port1
+  selector:
+     app: portauthority-deployment
