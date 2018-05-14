@@ -31,10 +31,10 @@ func init() {
 }
 
 // App func init
-func App() *cli.App {
+func App(appVersion string) *cli.App {
 	app := cli.NewApp()
 	app.Name = "Port Authority"
-	app.Version = "v0.4.0"
+	app.Version = appVersion
 	app.Usage = ""
 	app.Flags = []cli.Flag{}
 

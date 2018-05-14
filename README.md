@@ -24,9 +24,14 @@ In the backend Port Authority utilizes the open source static analysis tool [Cla
 
    `eval $(minikube docker-env)`
 
-2. Build & deploy:
+2. Deploy official Port Authority stack:
 
    `make deploy-minikube`
+
+(Optional). Build & deploy local developer build stack:
+
+   `make deploy-minikube-dev`
+
 
 ## Optional Configuration
 Different configuration adjustments can be made to the Port Authority deployment here: [minikube/portauthority/portauthority/config.yml](minikube/portauthority/portauthority/config.yml)
