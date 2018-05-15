@@ -39,7 +39,7 @@ deploy-minikube: clean-minikube
 				kubectl rollout status deployment/portauthority-deployment
 
 ## File Targets ##
-deploy-minikube-dev: clean docker-build clean-minikube
+deploy-minikube-dev: clean build-linux docker-build clean-minikube
 				@echo "Deploying locally built devloper build of Port Authority"
 				@echo "Applying Clair postgres deployment files"
 				kubectl apply -f ./minikube/clair/postgres
@@ -58,6 +58,7 @@ deploy-minikube-dev: clean docker-build clean-minikube
 
 clean-minikube:
 				@echo "Cleaning up previous portauthority deployments (postgres will remain)"
+				kubectl delete service portauthority-postgres-service
 				kubectl delete -f ./minikube/portauthority/portauthority --ignore-not-found
 				kubectl delete -f ./minikube/portauthority/portauthority-local --ignore-not-found
 
@@ -71,7 +72,7 @@ clean-minikube-postgres:
 build-mac:
 				$(GOBUILD) -o $(BINARY_MAC)
 build-linux:
-				CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)
+				CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -ldflags "-X main.appVersion=local-dev" -o $(BINARY_NAME)
 docker-build:
 				docker build -t $(BINARY_NAME) .
 

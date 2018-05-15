@@ -28,10 +28,19 @@ In the backend Port Authority utilizes the open source static analysis tool [Cla
 
    `make deploy-minikube`
 
-(Optional). Build & deploy local developer build stack:
+(Optional). Local developer build stack:
+
+1. Use Minikube Docker:
+
+   `eval $(minikube docker-env)`
+
+2. Get all Glide dependancies:
+
+   `make deps`
+
+3. Deploy official Port Authority stack:
 
    `make deploy-minikube-dev`
-
 
 ## Optional Configuration
 Different configuration adjustments can be made to the Port Authority deployment here: [minikube/portauthority/portauthority/config.yml](minikube/portauthority/portauthority/config.yml)
