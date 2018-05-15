@@ -11,8 +11,8 @@ spec:
     spec:
       containers:
       - name: portauthority
-        image: target/portauthority:latest
-        imagePullPolicy: Always
+        image: portauthority:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 6100
         - containerPort: 6101

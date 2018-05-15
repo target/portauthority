@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/target/portauthority.svg?branch=master)](https://travis-ci.org/target/portauthority/builds)
+
 ## Introduction
 
 Port Authority is an API service that delivers component based vulnerability assessments for Docker images at time of build and in run-time environments. Port Authority also provides Developers additional customizable offerings to assist with the automated audit and governance of their containers.
@@ -22,13 +24,23 @@ In the backend Port Authority utilizes the open source static analysis tool [Cla
 
    `eval $(minikube docker-env)`
 
+2. Deploy official Port Authority stack:
+
+   `make deploy-minikube`
+
+(Optional). Local developer build stack:
+
+1. Use Minikube Docker:
+
+   `eval $(minikube docker-env)`
+
 2. Get all Glide dependancies:
 
    `make deps`
 
-3. Build & deploy:
+3. Deploy official Port Authority stack:
 
-   `make deploy-minikube`
+   `make deploy-minikube-dev`
 
 ## Optional Configuration
 Different configuration adjustments can be made to the Port Authority deployment here: [minikube/portauthority/portauthority/config.yml](minikube/portauthority/portauthority/config.yml)
@@ -73,3 +85,5 @@ Found something that doesn't seem right or have a feature request? [Please open 
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE.txt)
 
 &copy;2018 Target Brands, Inc.
+
+**Credit [Renee French](http://reneefrench.blogspot.com/) for original golang gopher

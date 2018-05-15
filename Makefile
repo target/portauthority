@@ -21,7 +21,8 @@ deps:	| glide
 				@glide install -v
 
 ## File Targets ##
-deploy-minikube: clean build-linux docker-build clean-minikube
+deploy-minikube: clean-minikube
+				@echo "Deploying officially built Port Authority"
 				@echo "Applying Clair postgres deployment files"
 				kubectl apply -f ./minikube/clair/postgres
 				kubectl rollout status deployment/clair-postgres-deployment
@@ -37,9 +38,29 @@ deploy-minikube: clean build-linux docker-build clean-minikube
 				kubectl apply -f ./minikube/portauthority/portauthority
 				kubectl rollout status deployment/portauthority-deployment
 
+## File Targets ##
+deploy-minikube-dev: clean build-linux docker-build clean-minikube
+				@echo "Deploying locally built devloper build of Port Authority"
+				@echo "Applying Clair postgres deployment files"
+				kubectl apply -f ./minikube/clair/postgres
+				kubectl rollout status deployment/clair-postgres-deployment
+				sleep 5
+				@echo "Applying Clair deployment files"
+				kubectl apply -f ./minikube/clair/clair
+				kubectl rollout status deployment/clair-deployment
+				@echo "Applying portauthority postgres deployment files"
+				kubectl apply -f ./minikube/portauthority/postgres
+				kubectl rollout status deployment/portauthority-postgres-deployment
+				sleep 5
+				@echo "Applying portauthority deployment files"
+				kubectl apply -f ./minikube/portauthority/portauthority-local
+				kubectl rollout status deployment/portauthority-deployment
+
 clean-minikube:
 				@echo "Cleaning up previous portauthority deployments (postgres will remain)"
+				kubectl delete service portauthority-postgres-service --ignore-not-found
 				kubectl delete -f ./minikube/portauthority/portauthority --ignore-not-found
+				kubectl delete -f ./minikube/portauthority/portauthority-local --ignore-not-found
 
 clean-minikube-postgres:
 				@echo "Cleaning Clair postgres database"
@@ -51,7 +72,7 @@ clean-minikube-postgres:
 build-mac:
 				$(GOBUILD) -o $(BINARY_MAC)
 build-linux:
-				CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)
+				CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -ldflags "-X main.appVersion=local-dev" -o $(BINARY_NAME)
 docker-build:
 				docker build -t $(BINARY_NAME) .
 

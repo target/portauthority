@@ -11,8 +11,10 @@ import (
 	_ "github.com/target/portauthority/pkg/datastore/pgsql"
 )
 
+var appVersion string
+
 func main() {
-	app := cmd.App()
+	app := cmd.App(appVersion)
 	app.Run(os.Args)
 
 }
