@@ -13,10 +13,10 @@ WORKDIR /go/src/github.com/target/portauthority
 
 RUN glide install -v
 
-RUN VERSION=$(git for-each-ref refs/tags --sort=-taggerdate --format='%(refname:short)' --count=1 2> /dev/null); \
-  if [ $? -eq 0 ]; \
-  then go build -ldflags "-X main.appVersion=dev" -o portauthority; \
-  else go build -ldflags "-X main.appVersion=$VERSION" -o portauthority; \
+RUN VERSION=$(git for-each-ref refs/tags --sort=-taggerdate --format='%(refname:short)' --count=1) && echo version=$VERSION; \
+  if [ "$VERSION" == "" ] || [ -z "$VERSION" ]; \
+  then echo "DEV BUILD" && go build -ldflags "-X main.appVersion=dev" -o portauthority; \
+  else echo "TAG BUILD" && go build -ldflags "-X main.appVersion=$VERSION" -o portauthority; \
   fi
 
 
