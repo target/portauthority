@@ -5,13 +5,11 @@
 
 Port Authority is an API service that delivers component based vulnerability assessments for Docker images at time of build and in run-time environments.
 
-<img align="right" width="300" src="imgs/ahab-small.png">
-
 The Port Authority API is capable of orchestrating scans of individual public or private images as well as scanning entire private Docker registries like [Docker Hub](https://hub.docker.com), [Google Container Registry](https://cloud.google.com/container-registry/) or [Artifactory](https://jfrog.com/artifactory/). To accomplish this, Port Authority breaks each Docker image into layers and sends it to the open source static analysis tool [Clair](https://github.com/coreos/clair) in the backend to perform the scans and identify vulnerabilities. Upon completion of this workflow Port Authority maintains a manifest of the images and scan results.
 
 Port Authority also supplies developers with customizable offerings to assist with the audit and governance of their container workloads. Port Authority provides a webhook that when leveraged by a [Kubernetes](https://github.com/kubernetes/kubernetes) admission controller will allow or deny deployments based off of user-defined policies and image attributes. Port Authority then achieves run-time inspection by integrating with Kubernetes to discover running containers and inventorying those deployed images for scanning.
 
-## Getting Started
+## Getting Started <img align="right" width="300" src="imgs/ahab-small.png">
 
 ### Setup and Start Minikube
 1. Install [Minikube](https://github.com/kubernetes/minikube)
