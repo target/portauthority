@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/pkg/errors"
+	"github.com/target/portauthority/pkg/datastore"
 	"github.com/target/portauthority/pkg/docker/registry"
 )
 
@@ -20,13 +21,14 @@ type ImageEnvelope struct {
 
 // Image struct init
 type Image struct {
-	Registry   string   `json:"registry"`
-	Repo       string   `json:"repo"`
-	Tag        string   `json:"tag"`
-	Digest     string   `json:"digest"`
-	Layers     []string `json:"layers"`
-	ManifestV2 string   `json:"manifest"`
-	ManifestV1 string   `json:"manifestv1"`
+	Registry   string                `json:"registry"`
+	Repo       string                `json:"repo"`
+	Tag        string                `json:"tag"`
+	Digest     string                `json:"digest"`
+	Layers     []string              `json:"layers"`
+	ManifestV2 string                `json:"manifest"`
+	ManifestV1 string                `json:"manifestv1"`
+	Metadata   datastore.MetadataMap `json:"metadata"`
 }
 
 // CrawlConfig struct init

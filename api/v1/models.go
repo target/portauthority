@@ -42,6 +42,7 @@ type Image struct {
 	RegistryPassword string                `json:"RegistryPassword,omitempty"`
 	Features         []clairclient.Feature `json:"Features,omitempty"`
 	Violations       []Violation           `json:"Violations,omitempty"`
+	Metadata         datastore.MetadataMap `json:"Metadata"`
 }
 
 // ImageFromDatabaseModel func init
@@ -52,6 +53,7 @@ func ImageFromDatabaseModel(dbImage *datastore.Image) Image {
 		Repo:      dbImage.Repo,
 		Tag:       dbImage.Tag,
 		Digest:    dbImage.Digest,
+		Metadata:  dbImage.Metadata,
 		FirstSeen: dbImage.FirstSeen,
 		LastSeen:  dbImage.LastSeen,
 	}

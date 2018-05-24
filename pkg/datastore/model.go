@@ -31,15 +31,50 @@ type Model struct {
 // Image DB Struct
 type Image struct {
 	Model
-	TopLayer   string    `db:"top_layer"`
-	Registry   string    `db:"registry"`
-	Repo       string    `db:"repo"`
-	Tag        string    `db:"tag"`
-	Digest     string    `db:"digest"`
-	ManifestV2 string    `db:"manifest_v2"`
-	ManifestV1 string    `db:"manifest_v1"`
-	FirstSeen  time.Time `db:"first_seen"`
-	LastSeen   time.Time `db:"last_seen"`
+	TopLayer   string      `db:"top_layer"`
+	Registry   string      `db:"registry"`
+	Repo       string      `db:"repo"`
+	Tag        string      `db:"tag"`
+	Digest     string      `db:"digest"`
+	ManifestV2 string      `db:"manifest_v2"`
+	ManifestV1 string      `db:"manifest_v1"`
+	Metadata   MetadataMap `db:"metadata"`
+	FirstSeen  time.Time   `db:"first_seen"`
+	LastSeen   time.Time   `db:"last_seen"`
+}
+
+// MetadataMap is a type for metadata jsonb column
+type MetadataMap map[string]interface{}
+
+// Value returns marshalled json from MetadataMap
+func (m MetadataMap) Value() (driver.Value, error) {
+	j, err := json.Marshal(m)
+	return j, err
+}
+
+// Scan transforms raw jsonb data to MetadataMap type
+func (m *MetadataMap) Scan(src interface{}) error {
+	if src == nil {
+		return nil
+	}
+
+	source, ok := src.([]byte)
+	if !ok {
+		return errors.New("type assertion .([]byte) failed")
+	}
+
+	var i interface{}
+	err := json.Unmarshal(source, &i)
+	if err != nil {
+		return err
+	}
+
+	*m, ok = i.(map[string]interface{})
+	if !ok {
+		return errors.New("type assertion .(map[string]interface{}) failed")
+	}
+
+	return nil
 }
 
 // Container DB struct

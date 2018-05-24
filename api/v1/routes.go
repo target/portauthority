@@ -35,9 +35,9 @@ import (
 	"github.com/target/portauthority/pkg/datastore"
 	"github.com/target/portauthority/pkg/docker"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
 	"github.com/prometheus/client_golang/prometheus"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -364,17 +364,22 @@ func postImage(w http.ResponseWriter, r *http.Request, p httprouter.Params, ctx 
 	request := ImageEnvelope{}
 	var token *docker.Token
 
+	log.Info("Decoding request")
 	err := decodeJSON(r, &request)
 	if err != nil {
+		log.Info(fmt.Sprintf("Non-nil decoding error %s", err))
 		writeResponse(w, r, http.StatusBadRequest, ImageEnvelope{Error: &Error{err.Error()}})
 		return postImageRoute, http.StatusBadRequest
 	}
 	if request.Image == nil {
+		log.Info("request.Image is nil")
 		writeResponse(w, r, http.StatusBadRequest, ImageEnvelope{Error: &Error{"failed to provide image"}})
 		return postImageRoute, http.StatusBadRequest
 	}
 
 	// Assume it's public Docker if no registry is supplied
+	log.Info(fmt.Sprintf("request.Image.Registry %s", request.Image.Registry))
+	log.Info(fmt.Sprintf("request.Image.Metadata %s", request.Image.Metadata))
 	registryURL := request.Image.Registry
 	repo := request.Image.Repo
 	if request.Image.Registry == "" || strings.ToLower(request.Image.Registry) == "https://docker.io" {
@@ -405,6 +410,7 @@ func postImage(w http.ResponseWriter, r *http.Request, p httprouter.Params, ctx 
 	}
 
 	dockerImage, err := docker.GetImage(dockerRegistry, repo, request.Image.Tag)
+	dockerImage.Metadata = request.Image.Metadata
 	if err != nil {
 		writeResponse(w, r, http.StatusBadRequest, ImageEnvelope{Error: &Error{err.Error()}})
 		return postImageRoute, http.StatusBadRequest
