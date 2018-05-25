@@ -11,7 +11,6 @@ import (
 	"encoding/json"
 	"regexp"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/target/portauthority/pkg/commonerr"
 
 	"github.com/pkg/errors"
@@ -130,19 +129,15 @@ func (p *pgsql) GetImageByID(id int) (*datastore.Image, error) {
 }
 
 func (p *pgsql) UpsertImage(image *datastore.Image) error {
-	// Checking for unsafe chars within manifests
-	reg, err := regexp.Compile("'")
+	safeManifestV1, err := json.Marshal(image.ManifestV1)
 	if err != nil {
-		log.Fatal(err)
+		safeManifestV1 = []byte(`{}`)
 	}
 
-	safeManifestV1 := reg.ReplaceAllString(image.ManifestV1, "''")
-	if safeManifestV1 == "" {
-		safeManifestV1 = "{}"
-	}
-	safeManifestV2 := reg.ReplaceAllString(image.ManifestV2, "''")
-	if safeManifestV2 == "" {
-		safeManifestV2 = "{}"
+	var safeManifestV2 []byte
+	safeManifestV2, err = json.Marshal(image.ManifestV2)
+	if err != nil {
+		safeManifestV2 = []byte(`{}`)
 	}
 
 	safeMetadata := []byte(`{}`)

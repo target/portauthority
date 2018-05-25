@@ -42,7 +42,7 @@ type Image struct {
 	RegistryPassword string                `json:"RegistryPassword,omitempty"`
 	Features         []clairclient.Feature `json:"Features,omitempty"`
 	Violations       []Violation           `json:"Violations,omitempty"`
-	Metadata         datastore.MetadataMap `json:"Metadata"`
+	Metadata         datastore.JSONMap     `json:"Metadata"`
 }
 
 // ImageFromDatabaseModel func init
@@ -75,22 +75,22 @@ type ImagesEnvelope struct {
 
 // Container struct init
 type Container struct {
-	ID              uint64                  `json:"ID,omitempty"`
-	Namespace       string                  `json:"Namespace"`
-	Cluster         string                  `json:"Cluster"`
-	Name            string                  `json:"Name"`
-	Image           string                  `json:"Image"`
-	ImageScanned    bool                    `json:"ImageScanned"`
-	ImageID         string                  `json:"ImageID"`
-	ImageRegistry   string                  `json:"ImageRegistry"`
-	ImageRepo       string                  `json:"ImageRepo"`
-	ImageTag        string                  `json:"ImageTag"`
-	ImageDigest     string                  `json:"ImageDigest"`
-	ImageFeatures   []clairclient.Feature   `json:"Features,omitempty"`
-	ImageViolations []Violation             `json:"Violations,omitempty"`
-	Annotations     datastore.AnnotationMap `json:"Annotations"`
-	FirstSeen       time.Time               `json:"FirstSeen"`
-	LastSeen        time.Time               `json:"LastSeen"`
+	ID              uint64                `json:"ID,omitempty"`
+	Namespace       string                `json:"Namespace"`
+	Cluster         string                `json:"Cluster"`
+	Name            string                `json:"Name"`
+	Image           string                `json:"Image"`
+	ImageScanned    bool                  `json:"ImageScanned"`
+	ImageID         string                `json:"ImageID"`
+	ImageRegistry   string                `json:"ImageRegistry"`
+	ImageRepo       string                `json:"ImageRepo"`
+	ImageTag        string                `json:"ImageTag"`
+	ImageDigest     string                `json:"ImageDigest"`
+	ImageFeatures   []clairclient.Feature `json:"Features,omitempty"`
+	ImageViolations []Violation           `json:"Violations,omitempty"`
+	Annotations     datastore.JSONMap     `json:"Annotations"`
+	FirstSeen       time.Time             `json:"FirstSeen"`
+	LastSeen        time.Time             `json:"LastSeen"`
 }
 
 // ContainerFromDatabaseModel func init
