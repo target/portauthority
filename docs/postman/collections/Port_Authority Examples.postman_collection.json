@@ -62,7 +62,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"Image\": {\n\t\t\"Registry\": \"https://registry-1.docker.io\",\n\t\t\"Repo\": \"library/postgres\",\n\t\t\"Tag\": \"9.2\",\n\t\t\"Username\": \"\",\n\t\t\"Password\": \"\"\n\t}\n}"
+              "raw": "{\n\t\"Image\": {\n\t\t\"Registry\": \"https://registry-1.docker.io\",\n\t\t\"Repo\": \"library/postgres\",\n\t\t\"Tag\": \"9.1\",\n\t\t\"Username\": \"\",\n\t\t\"Password\": \"\",\n\t\t\"Metadata\": { \n\t\t\t\"data\": \"is so meta\"\n\t\t}\n\t}\n}"
 						},
 						"url": {
 							"raw": "{{host}}:{{port}}/{{version}}/images",
