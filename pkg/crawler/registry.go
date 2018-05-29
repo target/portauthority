@@ -152,6 +152,7 @@ func ScanImage(db datastore.Backend, cc clairclient.Client, token *docker.Token,
 			Digest:     image.Digest,
 			ManifestV2: image.ManifestV2,
 			ManifestV1: image.ManifestV1,
+			Metadata:   image.Metadata,
 			FirstSeen:  time.Now(),
 			LastSeen:   time.Now(),
 		}

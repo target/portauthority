@@ -8,9 +8,9 @@ package pgsql
 
 import (
 	"database/sql"
+	"encoding/json"
 	"regexp"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/target/portauthority/pkg/commonerr"
 
 	"github.com/pkg/errors"
@@ -20,7 +20,7 @@ import (
 // GetAllImages returns all images from the psql table 'images'
 func (p *pgsql) GetAllImages(registry, repo, tag, digest, dateStart, dateEnd, limit string) (*[]*datastore.Image, error) {
 	var images []*datastore.Image
-	query := "SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, first_seen, last_seen FROM image_pa WHERE registry LIKE '%' || $1 || '%' AND repo LIKE '%' || $2 || '%' AND tag LIKE '%' || $3 || '%' AND digest LIKE '%' || $4 || '%'"
+	query := "SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen FROM image_pa WHERE registry LIKE '%' || $1 || '%' AND repo LIKE '%' || $2 || '%' AND tag LIKE '%' || $3 || '%' AND digest LIKE '%' || $4 || '%'"
 
 	// Regex conditionals should prevent possible SQL injection from unescaped
 	// concatenation to query string.
@@ -48,7 +48,7 @@ func (p *pgsql) GetAllImages(registry, repo, tag, digest, dateStart, dateEnd, li
 	defer rows.Close()
 	for rows.Next() {
 		var image datastore.Image
-		err = rows.Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.FirstSeen, &image.LastSeen)
+		err = rows.Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.Metadata, &image.FirstSeen, &image.LastSeen)
 		if err != nil {
 			return nil, errors.Wrap(err, "error scanning images")
 		}
@@ -65,7 +65,7 @@ func (p *pgsql) GetAllImages(registry, repo, tag, digest, dateStart, dateEnd, li
 // TODO: Improve this func
 func (p *pgsql) GetImage(registry, repo, tag, digest string) (*datastore.Image, error) {
 	var image datastore.Image
-	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, first_seen, last_seen FROM image_pa WHERE registry=$1 AND repo=$2 AND tag=$3 AND digest=$4", registry, repo, tag, digest).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.FirstSeen, &image.LastSeen)
+	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen FROM image_pa WHERE registry=$1 AND repo=$2 AND tag=$3 AND digest=$4", registry, repo, tag, digest).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.Metadata, &image.FirstSeen, &image.LastSeen)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
@@ -87,7 +87,7 @@ func (p *pgsql) GetImage(registry, repo, tag, digest string) (*datastore.Image, 
 // workaround.
 func (p *pgsql) GetImageByRrt(registry, repo, tag string) (*datastore.Image, error) {
 	var image datastore.Image
-	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, first_seen, last_seen FROM image_pa WHERE registry LIKE '%' || $1 AND repo=$2 AND tag=$3 order by last_seen desc limit 1", registry, repo, tag).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.FirstSeen, &image.LastSeen)
+	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen FROM image_pa WHERE registry LIKE '%' || $1 AND repo=$2 AND tag=$3 order by last_seen desc limit 1", registry, repo, tag).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.Metadata, &image.FirstSeen, &image.LastSeen)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
@@ -101,7 +101,7 @@ func (p *pgsql) GetImageByRrt(registry, repo, tag string) (*datastore.Image, err
 
 func (p *pgsql) GetImageByDigest(digest string) (*datastore.Image, error) {
 	var image datastore.Image
-	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, first_seen, last_seen FROM image_pa WHERE digest=$1 order by last_seen desc limit 1", digest).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.FirstSeen, &image.LastSeen)
+	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen FROM image_pa WHERE digest=$1 order by last_seen desc limit 1", digest).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.Metadata, &image.FirstSeen, &image.LastSeen)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
@@ -115,7 +115,7 @@ func (p *pgsql) GetImageByDigest(digest string) (*datastore.Image, error) {
 
 func (p *pgsql) GetImageByID(id int) (*datastore.Image, error) {
 	var image datastore.Image
-	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, first_seen, last_seen FROM image_pa WHERE id=$1", id).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.FirstSeen, &image.LastSeen)
+	err := p.QueryRow("SELECT id, top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen FROM image_pa WHERE id=$1", id).Scan(&image.ID, &image.TopLayer, &image.Registry, &image.Repo, &image.Tag, &image.Digest, &image.ManifestV2, &image.ManifestV1, &image.Metadata, &image.FirstSeen, &image.LastSeen)
 	if err != nil {
 		switch err {
 		case sql.ErrNoRows:
@@ -129,22 +129,26 @@ func (p *pgsql) GetImageByID(id int) (*datastore.Image, error) {
 }
 
 func (p *pgsql) UpsertImage(image *datastore.Image) error {
-	// Checking for unsafe chars within manifests
-	reg, err := regexp.Compile("'")
+	safeManifestV1, err := json.Marshal(image.ManifestV1)
 	if err != nil {
-		log.Fatal(err)
+		safeManifestV1 = []byte(`{}`)
 	}
 
-	safeManifestV1 := reg.ReplaceAllString(image.ManifestV1, "''")
-	if safeManifestV1 == "" {
-		safeManifestV1 = "{}"
-	}
-	safeManifestV2 := reg.ReplaceAllString(image.ManifestV2, "''")
-	if safeManifestV2 == "" {
-		safeManifestV2 = "{}"
+	var safeManifestV2 []byte
+	safeManifestV2, err = json.Marshal(image.ManifestV2)
+	if err != nil {
+		safeManifestV2 = []byte(`{}`)
 	}
 
-	_, err = p.Exec("INSERT INTO image_pa as i (top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, first_seen, last_seen) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) ON CONFLICT (registry, repo, tag, digest) DO UPDATE SET last_seen = $9 WHERE i.registry = $2 AND i.repo = $3 AND i.tag = $4 AND i.digest = $5",
+	safeMetadata := []byte(`{}`)
+	if len(image.Metadata) > 0 {
+		safeMetadata, err = json.Marshal(image.Metadata)
+		if err != nil {
+			safeMetadata = []byte(`{}`)
+		}
+	}
+
+	_, err = p.Exec("INSERT INTO image_pa as i (top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) ON CONFLICT (registry, repo, tag, digest) DO UPDATE SET last_seen = $10 WHERE i.registry = $2 AND i.repo = $3 AND i.tag = $4 AND i.digest = $5",
 		image.TopLayer,
 		image.Registry,
 		image.Repo,
@@ -152,6 +156,7 @@ func (p *pgsql) UpsertImage(image *datastore.Image) error {
 		image.Digest,
 		safeManifestV2,
 		safeManifestV1,
+		safeMetadata,
 		image.FirstSeen,
 		image.LastSeen,
 	)
