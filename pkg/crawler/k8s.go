@@ -12,8 +12,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/target/portauthority/pkg/clair/client"
 	"github.com/target/portauthority/pkg/datastore"
 	"github.com/target/portauthority/pkg/docker"
@@ -228,7 +228,7 @@ func (c *K8sCrawler) GetContainerImages() ([]*datastore.Container, string, error
 			return nil, clusterHost, err
 		}
 
-		annotations := datastore.AnnotationMap{}
+		annotations := datastore.JSONMap{}
 		var JSONTemp interface{}
 		for key, value := range ns.Annotations {
 			err = json.Unmarshal([]byte(value), &JSONTemp)

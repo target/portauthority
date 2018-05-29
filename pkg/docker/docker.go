@@ -3,12 +3,13 @@
 package docker
 
 import (
-	"encoding/json"
 	"fmt"
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/fatih/structs"
 	"github.com/pkg/errors"
+	"github.com/target/portauthority/pkg/datastore"
 	"github.com/target/portauthority/pkg/docker/registry"
 )
 
@@ -20,13 +21,14 @@ type ImageEnvelope struct {
 
 // Image struct init
 type Image struct {
-	Registry   string   `json:"registry"`
-	Repo       string   `json:"repo"`
-	Tag        string   `json:"tag"`
-	Digest     string   `json:"digest"`
-	Layers     []string `json:"layers"`
-	ManifestV2 string   `json:"manifest"`
-	ManifestV1 string   `json:"manifestv1"`
+	Registry   string            `json:"registry"`
+	Repo       string            `json:"repo"`
+	Tag        string            `json:"tag"`
+	Digest     string            `json:"digest"`
+	Layers     []string          `json:"layers"`
+	ManifestV2 datastore.JSONMap `json:"manifest"`
+	ManifestV1 datastore.JSONMap `json:"manifestv1"`
+	Metadata   datastore.JSONMap `json:"metadata"`
 }
 
 // CrawlConfig struct init
@@ -129,11 +131,12 @@ func GetImage(hub *registry.Registry, repo string, tag string) (*Image, error) {
 
 	// Both V1 and V2 manifests contain useful data we want to store
 	var layers []string
-	var marshaledManifestV2 []byte
+	var manifestV2Map map[string]interface{}
 	manifest, err := hub.ManifestV2(repo, tag)
 	if err != nil {
 		log.Debug(fmt.Sprintf("Error getting v2 manifest: %s for Image %s/%s:%s", err, hub.URL, repo, tag))
 	} else {
+		manifestV2Map = structs.Map(manifest.Manifest)
 
 		// Will use v2 manifest to build layers if its availble.
 		// V1 and V2 layer order is reversed.
@@ -142,19 +145,14 @@ func GetImage(hub *registry.Registry, repo string, tag string) (*Image, error) {
 				layers = append(layers, string(manifest.Layers[i].Digest))
 			}
 		}
-
-		// Format V2 Manifest into JSON for easy db storage
-		marshaledManifestV2, err = json.Marshal(manifest)
-		if err != nil {
-			log.Debug(fmt.Sprintf("Error parsing v2 manifest: %s/%s:%s", hub.URL, repo, tag))
-		}
 	}
 
-	var marshaledManifestV1 []byte
+	var manifestV1Map map[string]interface{}
 	manifestV1, err := hub.Manifest(repo, tag)
 	if err != nil {
 		log.Debug(fmt.Sprintf("Error getting v1 manifest: %s for Image %s/%s:%s", err, hub.URL, repo, tag))
 	} else {
+		manifestV1Map = structs.Map(manifestV1.Manifest)
 
 		// If layers from V1 aren't available attempt to use the V1.
 		// V1 and V2 layer order is reversed.
@@ -164,12 +162,6 @@ func GetImage(hub *registry.Registry, repo string, tag string) (*Image, error) {
 					layers = append(layers, string(manifestV1.FSLayers[i].BlobSum))
 				}
 			}
-		}
-
-		// Format V1 Manifest into JSON for easy db storage
-		marshaledManifestV1, err = json.Marshal(manifestV1)
-		if err != nil {
-			log.Debug(fmt.Sprintf("Error parsing v1 manifest: %s/%s:%s", hub.URL, repo, tag))
 		}
 	}
 
@@ -186,8 +178,8 @@ func GetImage(hub *registry.Registry, repo string, tag string) (*Image, error) {
 		Repo:       repo,
 		Tag:        tag,
 		Digest:     string(digest),
-		ManifestV1: string(marshaledManifestV1),
-		ManifestV2: string(marshaledManifestV2),
+		ManifestV1: manifestV1Map,
+		ManifestV2: manifestV2Map,
 		Layers:     layers,
 	}
 	return image, nil

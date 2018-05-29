@@ -36,8 +36,9 @@ type Image struct {
 	Repo       string    `db:"repo"`
 	Tag        string    `db:"tag"`
 	Digest     string    `db:"digest"`
-	ManifestV2 string    `db:"manifest_v2"`
-	ManifestV1 string    `db:"manifest_v1"`
+	ManifestV2 JSONMap   `db:"manifest_v2"`
+	ManifestV1 JSONMap   `db:"manifest_v1"`
+	Metadata   JSONMap   `db:"metadata"`
 	FirstSeen  time.Time `db:"first_seen"`
 	LastSeen   time.Time `db:"last_seen"`
 }
@@ -45,52 +46,18 @@ type Image struct {
 // Container DB struct
 type Container struct {
 	Model
-	Namespace     string        `db:"namespace"`
-	Cluster       string        `db:"cluster"`
-	Name          string        `db:"name"`
-	Image         string        `db:"image"`
-	ImageID       string        `db:"image_id"`
-	ImageRegistry string        `db:"image_registry"`
-	ImageRepo     string        `db:"image_repo"`
-	ImageTag      string        `db:"image_tag"`
-	ImageDigest   string        `db:"image_digest"`
-	Annotations   AnnotationMap `db:"annotations"`
-	FirstSeen     time.Time     `db:"first_seen"`
-	LastSeen      time.Time     `db:"last_seen"`
-}
-
-// AnnotationMap is a type for annotations jsonb column
-type AnnotationMap map[string]interface{}
-
-// Value returns marshalled json from AnnotationMap
-func (a AnnotationMap) Value() (driver.Value, error) {
-	j, err := json.Marshal(a)
-	return j, err
-}
-
-// Scan transforms raw jsonb data to AnnotationMap type
-func (a *AnnotationMap) Scan(src interface{}) error {
-	if src == nil {
-		return nil
-	}
-
-	source, ok := src.([]byte)
-	if !ok {
-		return errors.New("type assertion .([]byte) failed")
-	}
-
-	var i interface{}
-	err := json.Unmarshal(source, &i)
-	if err != nil {
-		return err
-	}
-
-	*a, ok = i.(map[string]interface{})
-	if !ok {
-		return errors.New("type assertion .(map[string]interface{}) failed")
-	}
-
-	return nil
+	Namespace     string    `db:"namespace"`
+	Cluster       string    `db:"cluster"`
+	Name          string    `db:"name"`
+	Image         string    `db:"image"`
+	ImageID       string    `db:"image_id"`
+	ImageRegistry string    `db:"image_registry"`
+	ImageRepo     string    `db:"image_repo"`
+	ImageTag      string    `db:"image_tag"`
+	ImageDigest   string    `db:"image_digest"`
+	Annotations   JSONMap   `db:"annotations"`
+	FirstSeen     time.Time `db:"first_seen"`
+	LastSeen      time.Time `db:"last_seen"`
 }
 
 // Policy DB struct
@@ -121,4 +88,38 @@ type Crawler struct {
 type CrawlerMessages struct {
 	Summary string `json:"summary,omitempty"`
 	Error   string `json:"error,omitempty"`
+}
+
+// JSONMap is a type for jsonb columns
+type JSONMap map[string]interface{}
+
+// Value returns marshalled json from JSONMap
+func (m JSONMap) Value() (driver.Value, error) {
+	j, err := json.Marshal(m)
+	return j, err
+}
+
+// Scan transforms raw jsonb data to JSONMap type
+func (m *JSONMap) Scan(src interface{}) error {
+	if src == nil {
+		return nil
+	}
+
+	source, ok := src.([]byte)
+	if !ok {
+		return errors.New("type assertion .([]byte) failed")
+	}
+
+	var i interface{}
+	err := json.Unmarshal(source, &i)
+	if err != nil {
+		return err
+	}
+
+	*m, ok = i.(map[string]interface{})
+	if !ok {
+		return errors.New("type assertion .(map[string]interface{}) failed")
+	}
+
+	return nil
 }

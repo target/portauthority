@@ -35,9 +35,9 @@ import (
 	"github.com/target/portauthority/pkg/datastore"
 	"github.com/target/portauthority/pkg/docker"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
 	"github.com/prometheus/client_golang/prometheus"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -409,6 +409,7 @@ func postImage(w http.ResponseWriter, r *http.Request, p httprouter.Params, ctx 
 		writeResponse(w, r, http.StatusBadRequest, ImageEnvelope{Error: &Error{err.Error()}})
 		return postImageRoute, http.StatusBadRequest
 	}
+	dockerImage.Metadata = request.Image.Metadata
 
 	// Now we scan the image
 	dbImage, err := crawler.ScanImage(ctx.Store, ctx.ClairClient, token, dockerImage)

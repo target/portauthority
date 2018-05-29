@@ -92,6 +92,7 @@ func (p *pgsql) initDatabase() error {
 					digest VARCHAR,
 					manifest_v2 JSONB,
 					manifest_v1 JSONB,
+					metadata JSONB,
 					first_seen TIMESTAMPTZ,
 					last_seen TIMESTAMPTZ,
 					unique (registry, repo, tag, digest)

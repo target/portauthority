@@ -31,8 +31,13 @@ import:
   - google
 - package: gopkg.in/yaml.v2
   version: ^2.2.0
-- package: k8s.io/apimachinery/pkg/apis/meta/v1
-- package: k8s.io/client-go/kubernetes
-- package: k8s.io/client-go/tools/clientcmd
+- package: k8s.io/apimachinery
+  subpackages:
+  - pkg/apis/meta/v1
+- package: k8s.io/client-go
   subpackages:
   - api
+  - kubernetes
+  - tools/clientcmd
+- package: github.com/fatih/structs
+  version: ^1.0.0

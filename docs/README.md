@@ -37,12 +37,15 @@ curl -X POST \
   -H "accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
-	"Image": {
-		"Registry": "https://registry-1.docker.io",
-		"Repo": "library/postgres",
-		"Tag": "latest",
-		"RegistryUser": "",
-		"RegistryPassword": ""
+  "Image": {
+    "Registry": "https://registry-1.docker.io",
+    "Repo": "library/postgres",
+    "Tag": "latest",
+    "RegistryUser": "",
+    "RegistryPassword": "",
+    "Metadata": {
+      "data": "is so meta"
+    }
 	}
 }'
 ```
@@ -58,7 +61,10 @@ curl -X POST \
         "Tag": "latest",
         "Digest": "sha256:d5787305ec0a3b9a24d0108cb5fdbb4befbd809f85639bf04aa1941138df9701",
         "FirstSeen": "2018-04-02T16:18:22.632404Z",
-        "LastSeen": "2018-04-02T17:11:17.515506Z"
+        "LastSeen": "2018-04-02T17:11:17.515506Z",
+        "Metadata": {
+            "data": "is so meta"
+        }
     }
 }
 ```
@@ -136,7 +142,10 @@ curl \
           "FixedBy": "1.2.11-r0"
         }
       }
-    ]
+    ],
+    "Metadata": {
+      "data": "is so meta"
+    }
   }
 }
 ```
@@ -180,7 +189,10 @@ curl \
             "Tag": "9.6",
             "Digest": "sha256:8df3344385deb0d5d781c442b2e275f7c321d601652d6317ce25ed8ffad03427",
             "FirstSeen": "2018-04-04T18:47:49.592846Z",
-            "LastSeen": "2018-04-04T18:47:49.592846Z"
+            "LastSeen": "2018-04-04T18:47:49.592846Z",
+            "Metadata": {
+                "data": "is so meta"
+            }
         },
         {
             "ID": 2,
@@ -189,7 +201,10 @@ curl \
             "Tag": "latest",
             "Digest": "sha256:cebd94b52087407fae5ebb902f2595bdacb1357e81d00db92b70a73cda93ed3b",
             "FirstSeen": "2018-04-04T18:47:49.741407Z",
-            "LastSeen": "2018-04-04T18:47:49.741408Z"
+            "LastSeen": "2018-04-04T18:47:49.741408Z",
+            "Metadata": {
+                "data": "is so meta"
+            }
         }
     ]
 }
@@ -319,10 +334,10 @@ curl \
         "ImageRepo": "portauthority",
         "ImageTag": "latest",
         "ImageDigest": "sha256:0b6ba7e5320175965a557cd74c418f15e897ec145818f96a5bcd76c8b8050e6a",
-        "TeamHipChatIDS": "{}",
-        "TeamEmailIDS": "{}",
-        "TeamName": "",
         "ApplicationID": "",
+        "Annotations": {
+            "kubernetes": "annotation"
+        },
         "FirstSeen": "2018-04-04T18:47:47.266826Z",
         "LastSeen": "2018-04-04T18:47:47.266826Z"
     },
@@ -337,9 +352,6 @@ curl \
         "ImageRepo": "postgres",
         "ImageTag": "9.6",
         "ImageDigest": "sha256:eda798e53a1a2684308c3d6408400c39e1431892e77d7d790d65d64a14467a43",
-        "TeamHipChatIDS": "{}",
-        "TeamEmailIDS": "{}",
-        "TeamName": "",
         "ApplicationID": "",
         "FirstSeen": "2018-04-04T18:47:47.269509Z",
         "LastSeen": "2018-04-04T18:47:47.269509Z"
