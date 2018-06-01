@@ -129,26 +129,11 @@ func (p *pgsql) GetImageByID(id int) (*datastore.Image, error) {
 }
 
 func (p *pgsql) UpsertImage(image *datastore.Image) error {
-	safeManifestV1, err := json.Marshal(image.ManifestV1)
-	if err != nil {
-		safeManifestV1 = []byte(`{}`)
-	}
+	safeManifestV1 := marshalOrReturnEmptyJSON(image.ManifestV1)
+	safeManifestV2 := marshalOrReturnEmptyJSON(image.ManifestV2)
+	safeMetadata := marshalOrReturnEmptyJSON(image.Metadata)
 
-	var safeManifestV2 []byte
-	safeManifestV2, err = json.Marshal(image.ManifestV2)
-	if err != nil {
-		safeManifestV2 = []byte(`{}`)
-	}
-
-	safeMetadata := []byte(`{}`)
-	if len(image.Metadata) > 0 {
-		safeMetadata, err = json.Marshal(image.Metadata)
-		if err != nil {
-			safeMetadata = []byte(`{}`)
-		}
-	}
-
-	_, err = p.Exec("INSERT INTO image_pa as i (top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) ON CONFLICT (registry, repo, tag, digest) DO UPDATE SET last_seen = $10 WHERE i.registry = $2 AND i.repo = $3 AND i.tag = $4 AND i.digest = $5",
+	_, err := p.Exec("INSERT INTO image_pa as i (top_layer, registry, repo, tag, digest, manifest_v2, manifest_v1, metadata, first_seen, last_seen) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) ON CONFLICT (registry, repo, tag, digest) DO UPDATE SET last_seen = $10 WHERE i.registry = $2 AND i.repo = $3 AND i.tag = $4 AND i.digest = $5",
 		image.TopLayer,
 		image.Registry,
 		image.Repo,
@@ -188,4 +173,16 @@ func (p *pgsql) DeleteImage(registry, repo, tag, digest string) (bool, error) {
 	}
 
 	return found, nil
+}
+
+func marshalOrReturnEmptyJSON(JSONMap map[string]interface{}) []byte {
+	safeJSON := []byte(`{}`)
+	var err error
+	if len(JSONMap) > 0 {
+		safeJSON, err = json.Marshal(JSONMap)
+		if err != nil {
+			safeJSON = []byte(`{}`)
+		}
+	}
+	return safeJSON
 }
