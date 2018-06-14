@@ -1,4 +1,5 @@
-# The values specified here are the default values that Port Authority uses if no configuration file is specified or if the keys are not defined.
+# The values specified here are the default values that Port Authority uses if no configuration file is specified or if
+# the keys are not defined.
 portauthority:
   database:
     # Database driver
@@ -7,7 +8,7 @@ portauthority:
       # PostgreSQL Connection string
       # https://www.postgresql.org/docs/current/static/libpq-connect.html#LIBPQ-CONNSTRING
 
-      # This can be the same or separate DB as your Clair database.
+      # This can be the same DB as the one used by Clair, or a different one
       source: host=192.168.99.100 port=30607 user=postgres password=password sslmode=disable statement_timeout=60000
 
       # Number of elements kept in the cache
@@ -18,22 +19,23 @@ portauthority:
     port: 6100
 
     # Health server port
-    # This is an unencrypted endpoint useful for load balancers to check to healthiness of the port authority server.
+    # This is an unencrypted endpoint useful for load balancers to check the health of the port authority server.
     healthport: 6101
 
     # Deadline before an API request will respond with a 503
     timeout: 900s
 
-    # Setting imagewebhookdefaultblock to true will set the imagewebhooks endpoint default behavior to block any images with policy violations.
-    # If it is set to false a user can change enable the behavior by setting the portauthority-webhook anotation to true
+    # Setting imagewebhookdefaultblock to true will set the imagewebhooks endpoint default behavior to block any images with
+    # policy violations.
+    # If it is set to false, a user can still enable the behavior by setting the portauthority-webhook annotation to true
     imagewebhookdefaultblock: false
 
-    # URL of the Clair server Port Authority sends it's images/layers for scanning
-    # If running Clair is running in Minikube, change the path to the advertised service (e.g. http://clair-service:6100)
+    # URL of the Clair server that Port Authority sends its images/layers to for scanning
+    # If Clair is running in Minikube, change the path to the advertised service (e.g. http://clair-service:6100)
     clairurl: http://192.168.99.100:32355
     clairtimeout: 900
 
-    ### Environment variables defined below are mapped to credentials used by the Kubneretes Crawler API (/v1/crawler/k8s)
+    ### Environment variables defined below are mapped to credentials used by the Kubernetes Crawler API (/v1/crawler/k8s)
     ### A 'Scan: true' flag will invoke their usage
     k8scrawlcredentials:
       - url: "docker.io" #basic auth is empty UN and PW
