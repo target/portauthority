@@ -232,21 +232,30 @@ The GET route for a container with a specific id provides a deep view with all o
 curl \
   -H "accept: application/json" \
   -H "Content-Type: application/json" \
-  http://192.168.99.100:31700/v1/containers/1?features&vulnerabilities&policy=default
+  http://192.168.99.100:31700/v1/containers/5?features&vulnerabilities&policy=default
 ```
 
 #### Example Response
 
 ```json
 {
-  "Image": {
-    "ID": 1,
-    "Registry": "https://registry-1.docker.io",
-    "Repo": "library/postgres",
-    "Tag": "9.6",
-    "Digest": "sha256:8df3344385deb0d5d781c442b2e275f7c321d601652d6317ce25ed8ffad03427",
-    "FirstSeen": "2016-06-12T16:14:00.573874Z",
-    "LastSeen": "2017-08-11T20:03:16.880075Z",
+  "Container": {
+    "ID": 5,
+    "Namespace": "default",
+    "Cluster": "https://192.168.99.100:8443",
+    "Name": "postgres",
+    "Image": "postgres:9.6",
+    "ImageScanned": true,
+    "ImageID": "docker-pullable://postgres@sha256:eda798e53a1a2684308c3d6408400c39e1431892e77d7d790d65d64a14467a43",
+    "ImageRegistry": "",
+    "ImageRepo": "postgres",
+    "ImageTag": "9.6",
+    "ImageDigest": "sha256:eda798e53a1a2684308c3d6408400c39e1431892e77d7d790d65d64a14467a43",
+    "Annotations": {
+        "kubernetes": "annotation"
+    },
+    "FirstSeen": "2018-04-04T18:47:47.269509Z",
+    "LastSeen": "2018-04-04T18:47:47.269509Z",
     "Features": [
       {
         "Name": "libc-utils",
@@ -334,7 +343,6 @@ curl \
         "ImageRepo": "portauthority",
         "ImageTag": "latest",
         "ImageDigest": "sha256:0b6ba7e5320175965a557cd74c418f15e897ec145818f96a5bcd76c8b8050e6a",
-        "ApplicationID": "",
         "Annotations": {
             "kubernetes": "annotation"
         },
