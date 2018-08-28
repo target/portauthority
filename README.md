@@ -45,7 +45,7 @@ Port Authority also supplies developers with customizable offerings to assist wi
 ## Optional Configuration
 Different configuration adjustments can be made to the Port Authority deployment here: [minikube/portauthority/portauthority/config.yml](minikube/portauthority/portauthority/config.yml)
 
-:white_check_mark: Add Docker Credentials used by the K8s Crawler scan feature
+:white_check_mark: Add Docker Credentials used by the K8s Crawler scan feature and when no credentials are present in a scan image request
 
 ```
 ### Environment variables defined below are mapped to credentials used by the Kubernetes Crawler API (/v1/crawler/k8s)

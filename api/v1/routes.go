@@ -385,10 +385,22 @@ func postImage(w http.ResponseWriter, r *http.Request, p httprouter.Params, ctx 
 		}
 	}
 
+	registryUser := request.Image.RegistryUser
+	registryPassword := request.Image.RegistryPassword
+	if registryUser == "" && registryPassword == "" {
+		for _, z := range ctx.RegAuth {
+			if strings.Contains(request.Image.Registry, z["url"]) {
+				registryUser = z["username"]
+				registryPassword = z["password"]
+				break
+			}
+		}
+	}
+
 	token, err = docker.AuthRegistry(&docker.AuthConfig{
 		RegistryURL: registryURL,
-		Username:    request.Image.RegistryUser,
-		Password:    request.Image.RegistryPassword,
+		Username:    registryUser,
+		Password:    registryPassword,
 		Repo:        repo,
 		Tag:         request.Image.Tag})
 
@@ -398,7 +410,7 @@ func postImage(w http.ResponseWriter, r *http.Request, p httprouter.Params, ctx 
 	}
 
 	// Get Docker registry client
-	dockerRegistry, err := docker.GetRegistry(registryURL, request.Image.RegistryUser, request.Image.RegistryPassword)
+	dockerRegistry, err := docker.GetRegistry(registryURL, registryUser, registryPassword)
 	if err != nil {
 		writeResponse(w, r, http.StatusBadRequest, ImageEnvelope{Error: &Error{"error making initial request to registry for auth"}})
 		return postImageRoute, http.StatusBadRequest

@@ -29,6 +29,8 @@ The POST route for the Image resource performs the analysis of an Image from the
 
 The Docker manifest is pulled from the registry and the proper layer path is sent to [Clair Layer API](https://github.com/coreos/clair/blob/master/Documentation/api_v1.md#post-layers) in the correct order.  The layer parent and child names are hashed with the image content digest to provide a unique name per layer so that the proper order can be maintained within the Clair database.
 
+When no registry credentials are available configuration will be checked for appropriate ones.
+
 #### Example Request
 
 ```
