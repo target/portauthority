@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 #Make sure we are patching all packages
 RUN apk update \
