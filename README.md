@@ -47,7 +47,7 @@ Different configuration adjustments can be made to the Port Authority deployment
 
 :white_check_mark: Add Docker Credentials used by the K8s Crawler scan feature
 
-```
+```yml
 ### Environment variables defined below are mapped to credentials used by the Kubernetes Crawler API (/v1/crawler/k8s)
 ### A 'Scan: true' flag will invoke their usage
 k8scrawlcredentials:
@@ -61,7 +61,7 @@ k8scrawlcredentials:
 ```
 
 :white_check_mark: Enable the [Kubernetes Admission Controller](docs/webhook-example/README.md) and change webhooks default behavior
-```
+```yml
 # Setting imagewebhookdefaultblock to true will set the imagewebhooks endpoint default behavior to block any images with policy violations.
 # If it is set to false a user can change enable the behavior by setting the portauthority-webhook deployment annotation to true
 imagewebhookdefaultblock: false
